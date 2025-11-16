@@ -16,5 +16,5 @@ I hold a B.S. in Computational & Applied Mathematics from San Jose State Univers
 
 In 2025, I received the Bronze Stevie Award for Technology Innovation for my contributions to applied GenAI and scalable cloud solution design. I’m passionate about building AI systems that are not only technically strong but also practical, scalable, and impactful for real users.
 
-You can find me at:
+My Linkedin is nashitakhandaker
 
