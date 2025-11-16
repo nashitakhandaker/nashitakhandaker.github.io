@@ -6,7 +6,7 @@ subtitle: <a href='#'>Affiliations dd</a>. AI/ML Cloud Expert
 
 profile:
   align: right
-  image: /assets/img/headshot.png
+  image: headshot.png
   image_circular: false # crops the image to make it circular
 ---
 
