@@ -2,7 +2,7 @@
 layout: about
 title: about
 permalink: /
-subtitle: <a href='#'>Affiliations dd</a>. AI/ML Cloud Expert
+subtitle: <a href='#'> AI/ML Cloud Expert
 
 profile:
   align: right
@@ -15,6 +15,4 @@ I’m Nashita Khandaker, an AI Solutions Architect at Avahi, an AWS Premier Tier
 I hold a B.S. in Computational & Applied Mathematics from San Jose State University and am currently pursuing my M.S. in Data Science at Southern Methodist University.
 
 In 2025, I received the Bronze Stevie Award for Technology Innovation for my contributions to applied GenAI and scalable cloud solution design. I’m passionate about building AI systems that are not only technically strong but also practical, scalable, and impactful for real users.
-
-My Linkedin is nashitakhandaker
 
