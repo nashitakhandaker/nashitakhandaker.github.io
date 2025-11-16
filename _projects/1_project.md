@@ -7,15 +7,12 @@ importance: 1
 category: work
 ---
 
-# Attrition Analysis — Frito-Lay Case Study  
-**MSDS 6306 • Doing Data Science**
-
 This project analyzes employee attrition patterns at Frito-Lay using the CaseStudy1-data.csv dataset.  
 The goal was to explore what factors contribute to attrition, perform model comparison, and present a clear business-focused narrative.
 
 ---
 
-## 📊 Project Summary
+## Project Summary
 
 This analysis includes:
 
@@ -29,7 +26,7 @@ The full knitted report is embedded below.
 
 ---
 
-## 📄 Full HTML Analysis Report
+## Full HTML Analysis Report
 
 <iframe src="/assets/html/CaseStudy1.html"
         width="100%"
@@ -39,7 +36,7 @@ The full knitted report is embedded below.
 
 ---
 
-## 🔑 Key Takeaways
+## Key Takeaways
 
 - Clear patterns exist between job satisfaction, overtime, and attrition  
 - Naive Bayes performed competitively despite assumptions of independence  
