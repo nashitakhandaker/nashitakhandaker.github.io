@@ -36,19 +36,3 @@ The full knitted report is embedded below.
 
 ---
 
-## Key Takeaways
-
-- Clear patterns exist between job satisfaction, overtime, and attrition  
-- Naive Bayes performed competitively despite assumptions of independence  
-- KNN required careful scaling and hyperparameter tuning  
-- Combining EDA + modeling provides actionable insight for HR  
-
----
-
-## 📁 Files Included
-
-- `Case Study Analysis.Rmd` – R Markdown source  
-- `CaseStudy1.html` – knitted report  
-- `CaseStudy1-data.csv` – dataset (not shown publicly unless you want it)
-
----
