@@ -31,7 +31,7 @@ The full knitted report is embedded below.
 
 ## 📄 Full HTML Analysis Report
 
-<iframe src="/assets/CaseStudy1.html"
+<iframe src="/assets/html/CaseStudy1.html"
         width="100%"
         height="1300px"
         style="border:none;">
