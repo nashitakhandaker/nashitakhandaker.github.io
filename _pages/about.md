@@ -27,7 +27,8 @@ latest_posts:
   limit: 3 # leave blank to include all the blog posts
 ---
 
-Hi, my name is Nashita Khandaker. I am a AI SA at Avahi, an AWS Premier Tier partner. I have a bachelors degree from San Jose State University in Computational and Applied Mathematics. Currently, I am pursuing an MS at Southern Methodist University in Data Science. 
+I’m Nashita Khandaker, an AI Solutions Architect at Avahi, an AWS Premier Tier Partner. I design and deliver end-to-end GenAI, machine learning, and cloud modernization solutions for enterprise clients, with experience across healthcare, finance, energy, and consumer tech. My work spans agentic workflows, multimodal architectures, AWS Bedrock and SageMaker pipelines, and Well-Architected cloud design.
 
-I am a 2025 Bronze Stevie Awards winner in 'Technology Innovation' category. 
-Link to your social media connections, too. This theme is set up to use [Font Awesome icons](https://fontawesome.com/) and [Academicons](https://jpswalsh.github.io/academicons/), like the ones below. Add your Facebook, Twitter, LinkedIn, Google Scholar, or just disable all of them.
+I hold a B.S. in Computational & Applied Mathematics from San Jose State University and am currently pursuing my M.S. in Data Science at Southern Methodist University.
+
+In 2025, I received the Bronze Stevie Award for Technology Innovation for my contributions to applied GenAI and scalable cloud solution design. I’m passionate about building AI systems that are not only technically strong but also practical, scalable, and impactful for real users.
