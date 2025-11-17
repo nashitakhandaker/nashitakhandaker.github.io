@@ -32,22 +32,27 @@
       company: Avahi
       year: May 2025-Present
       description:
-        - Architected generative, voice/conversational, and other GenAI AWS AI applications, delivering multimodal and agentic
-capabilities for 15+ clients across the finance, healthcare, and education sectors, and supporting 80+ partner deals this year.
-        - Optimized LLM prompts to enhance conversational accuracy and latency, supporting partner success and higher partner
-adoption.
-        - Led partner success through technical enablement, architectural reviews, and hands-on demos, securing >$600K in follow-on
-business.
-        - Defined scalable, repeatable architecture patterns and provided architecture review, mentorship, and AI product roadmap
-leadership, accelerating delivery by 50%, improving reliability, and aligning platform improvements to partner needs.
+        - Architected generative, voice/conversational, and other GenAI AWS AI applications,
+          delivering multimodal and agentic capabilities for 15+ clients across the finance,
+          healthcare, and education sectors, and supporting 80+ partner deals this year.
+        - Optimized LLM prompts to enhance conversational accuracy and latency, supporting partner
+          success and higher partner adoption.
+        - Led partner success through technical enablement, architectural reviews, and hands-on
+          demos, securing >$600K in follow-on business.
+        - Defined scalable, repeatable architecture patterns and provided architecture review,
+          mentorship, and AI product roadmap leadership, accelerating delivery by 50%, improving
+          reliability, and aligning platform improvements to partner needs.
         
     - title: Data Scientist
       company: Avahi
       year: July 2024-April 2025
       description:
-        - Built 4 GenAI proof of concepts, gaining hands-on experience bringing AI applications to life that all moved to production.
-        - Built a production-ready SDK that reduced latency by 40% while aligning with enterprise standards and regulatory frameworks
-        - Implemented LLM and ML pipelines using AWS services with focus on RAG architectures, embeddings, and agents.
+        - Built 4 GenAI proof of concepts, gaining hands-on experience bringing AI applications
+          to life that all moved to production.
+        - Built a production-ready SDK that reduced latency by 40% while aligning with enterprise
+          standards and regulatory frameworks.
+        - Implemented LLM and ML pipelines using AWS services with focus on RAG architectures,
+          embeddings, and agents.
 
 - title: Honors and Awards
   type: time_table
@@ -71,4 +76,3 @@ leadership, accelerating delivery by 50%, improving reliability, and aligning pl
       items:
         - Cloud Computing
         - AWS Cloud Platform
-
