@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Attrition Analysis (Frito-Lay Case Study)
+title: Frito-Lay Attrition
 description: SMU MSDS 6306 – Case Study 1
 img: /assets/img/11.jpg   # optional banner image
 importance: 1
@@ -20,7 +20,7 @@ This analysis includes:
 - Visualizations of key employee variables  
 - K-Nearest Neighbors vs Naive Bayes model comparison  
 - Confusion matrix, accuracy, precision, recall  
-- Interpretation of results for leadership (CEO/CFO audience)  
+- Interpretation of results for leadership (for both CEO/CFO audience)  
 
 The full knitted report is embedded below.
 
