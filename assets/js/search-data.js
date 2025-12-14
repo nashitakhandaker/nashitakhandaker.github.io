@@ -379,7 +379,12 @@ ninja.data = [{
             window.location.href = "/blog/2015/formatting-and-links/";
           
         },
-      },{id: "projects-frito-lay-attrition",
+      },{id: "projects-abalone-final-project",
+          title: 'Abalone Final Project',
+          description: "",
+          section: "Projects",handler: () => {
+              window.location.href = "/projects/abalone_project/";
+            },},{id: "projects-frito-lay-attrition",
           title: 'Frito-Lay Attrition',
           description: "SMU MSDS 6306 – Case Study 1",
           section: "Projects",handler: () => {
