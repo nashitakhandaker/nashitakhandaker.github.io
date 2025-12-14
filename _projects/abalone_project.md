@@ -1,0 +1,286 @@
+---
+title: "Abalone Final Project"
+author: "Chloe Prowse & Nashita Khandaker"
+date: "2025-12-14"
+output: pdf_document
+mainfont: Times New Roman
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = TRUE,
+  message = FALSE,
+  warning = FALSE,
+  fig.align = "center",
+  fig.width = 6,
+  fig.height = 4,
+  dpi = 150
+)
+
+library(dplyr)
+library(ggplot2)
+library(corrplot)
+```
+
+
+# Objective 1: Building a Predictive Model
+
+```{r}
+# Upload the abalone dataset.
+
+abalone <- read.csv("trainabalone.csv")
+
+summary(abalone)
+
+# I need to make sex as a factor. 
+abalone$Sex <- as.factor(abalone$Sex)
+
+# To make sure there are no NA columns in the dataset 
+colSums(is.na(abalone))
+```
+I wanted to check the data to see if any of shucked weights were greater than the total weight.
+I found that 10 of the observations had a shucked weight greater than the total weight. They were also significantly bigger, averaging about 9-10 units bigger. This statistically does not make sense since shucked weight is just the weight of an abalone without its shell. I decided to remove these values from the dataset.
+```{r}
+hist(abalone$Shucked.Weight,
+     main = "Histogram of Shucked Weight",
+     xlab = "Shucked Weight",
+     col = "navy",
+     border = "white")
+
+sum(abalone$Shucked.Weight > abalone$Weight)
+abalone[abalone$Shucked.Weight > abalone$Weight, ]
+
+# Filtering out the observations where shucked weight is greater
+abalone <- abalone %>%
+  filter(Shucked.Weight <= Weight)
+
+```
+I wanted to also check if any of the shell weights were bigger than the total weight. None of the shell weights were bigger than the total weight, so I moved forward with checking other variables.
+```{r}
+hist(abalone$Shell.Weight,
+     main = "Histogram of Shell Weight",
+     xlab = "Shell Weight",
+     col = "pink",
+     border = "white")
+
+sum(abalone$Shell.Weight > abalone$Weight)
+abalone[abalone$Shell.Weight > abalone$Weight, ]
+```
+I wanted to check if any of the heights were zero.There were 12 observations that had a height of zero but they were all infant abalones. Since abalones are generally very small, it can be hard to accurately measure the height. We kept these values in the data because they represent a very small portion of the data and aren't drastically different from the other indeterminant height values. They also represented 12 out of about 10,000 observations.This means they won't likely affect the data.
+```{r}
+hist(abalone$Height,
+     main = "Histogram of Height",
+     xlab = "Height",
+     col = "darkgreen",
+     border = "white")
+
+sum(abalone$Height == 0)
+abalone[abalone$Height == 0, ]
+
+```
+I wanted to also check if any of the viscera weights were bigger than the total weight. None of the viscera weights were bigger than the total weight, so I moved forward with creating a model.
+```{r}
+hist(abalone$Viscera.Weight,
+     main = "Histogram of Viscera Weight",
+     xlab = "Viscera Weight",
+     col = "lightblue",
+     border = "white")
+
+
+sum(abalone$Viscera.Weight > abalone$Weight)
+abalone[abalone$Viscera.Weight > abalone$Weight, ]
+```
+Many of the histograms were right skewed but that is to be expected with biological data. In this instance, doing a log transformation made the model more complex and it didn't improve MAE (I ran this on a different R script). The model without a transformation performs well, even with the skewness present. 
+```{r}
+set.seed(123)
+
+# Split the data 70/30 for train and test 
+n <- nrow(abalone)
+train_index <- sample(1:n, size = 0.7 * n)
+
+train_data <- abalone[train_index, ]
+test_data  <- abalone[-train_index, ]
+
+# This is the base model for the dataset
+abalone_model <- lm(Age ~ Sex + Length + Diameter + Height + Weight + Shucked.Weight + 
+                      Viscera.Weight + Shell.Weight, data = train_data)
+
+summary(abalone_model)
+
+
+# To look at the assumptions for the base model  
+par(mfrow = c(2, 2))
+plot(abalone_model)
+par(mfrow = c(1, 1))
+
+plot(cooks.distance(abalone_model),
+     type = "h",
+     ylab = "Cook's distance",
+     xlab = "Observation")
+```
+This model shows that every variable is significant except length and diameter.For the next model, I will include an interaction between length and diameter to see if they will be significant together. I will also include other interactions that scientifically make sense. Cook's D shows an influential observation. When I looked into the observation, it was the sex indeterminant. It had some larger values for its features compared to the other indeterminants. It did not appear to be an error and seemed to be something that could happen, so it was kept with the model.
+```{r}
+# I created another model to compare MAE
+# I used interactions between variables that would make sense
+abalone_interact <- lm(Age ~ Sex * Weight + Length * Diameter + Weight * Shell.Weight + 
+                         Height + Shucked.Weight + Viscera.Weight, data = train_data)
+
+
+# Length multiplied by Diameter gives us the overall shell size 
+# Weight multiplied by Shell.Weight give us the total mass with what the shell contributes
+# Sex multiplied by Weight gives us how Weight differs between male, females, and indeterminant
+
+summary(abalone_interact)
+
+# To look at the assumptions for the interaction model 
+par(mfrow = c(2, 2))
+plot(abalone_interact)
+par(mfrow = c(1, 1))
+
+plot(cooks.distance(abalone_interact),
+     type = "h",
+     ylab = "Cook's distance",
+     xlab = "Observation")
+```
+This model shows that interaction for variables length and diameter made them much more significant. The other interactions added were also significant, so we continued on with using this model. Cook's D shows an influential observation. When I looked into the observation, it was the sex indeterminant. It had some larger values for its features compared to the other indeterminants. It did not appear to be an error and seemed to be something that could happen, so it was kept with the model.
+```{r}
+# To calculate MAE, so we can compare the models 
+mae <- function(actual, predicted) {
+  mean(abs(actual - predicted)) }
+
+# Testing the base and interaction model 
+pred_abalone <- predict(abalone_model, test_data)
+pred_abalone_interact <- predict(abalone_interact, test_data)
+
+# To get the MAE for each model 
+mae_abalone <- mae(test_data$Age, pred_abalone)
+mae_abalone_interact <- mae(test_data$Age, pred_abalone_interact)
+
+# To compare the two models to find which is a better fit 
+MAE <- data.frame(Model = c("Abalone Base Model", "Abalone Interaction Model"),
+                  Test_MAE = c(mae_abalone, mae_abalone_interact))
+
+
+MAE
+
+```
+The linear regression model with interactions has a lower MAE, so we will proceed with using the interaction model to do predictions for the competition set.
+```{r}
+# I need to fit the model so that it is now trained on all the 
+# data to predict for the competition set 
+
+final_abalone_interact <- lm(Age ~ Sex * Weight + Length * Diameter + Weight * Shell.Weight 
+                             + Height + Shucked.Weight + Viscera.Weight, data = abalone)
+
+competition_data <- read.csv("competition.csv")
+
+competition_data$Sex <- as.factor(competition_data$Sex)
+
+# To generate the predictions 
+competition_predictions <- predict(final_abalone_interact, newdata = competition_data)
+
+# To make sure iD is included in the CSV with Age 
+submission <- data.frame(iD  = competition_data$id, Age = competition_predictions)
+
+# Writing the predictions in a CSV file 
+write.csv(submission,"abalone_predictions_project.csv", row.names = FALSE)
+
+```
+
+# Objective 2 : Exploratory Analysis 
+
+The purpose for this section is to explore which variables of abalone are strongly associated with age.
+Instead of focusing on prediction accuracy, this section will go into exploratory analysis and interpretability. 
+We are doing this so that we can better understand growth patterns and what helps determine an abalones age.
+
+
+Age vs Shell.Weight plot
+```{r}
+ggplot(abalone, aes(x = Shell.Weight, y = Age)) +
+  geom_point(alpha = 0.4) +
+  geom_smooth(method = "lm", se = FALSE) +
+  labs(
+    title = "Abalone Age vs Shell Weight",
+    x = "Shell Weight",
+    y = "Age"
+  ) +
+  theme_minimal()
+```
+This scatterplot shows that there is a strong positive relationship between shell weight 
+and age. This indicates that abalones with heavier shells tend to be older. The trend appears
+to be relatively consistent across the range of shell weights. This overall suggests that shell
+weight is a good indicator of growth and aging for an abalone. 
+
+Age vs Weight plot
+```{r}
+ggplot(abalone, aes(x = Weight, y = Age)) +
+  geom_point(alpha = 0.4) +
+  geom_smooth(method = "lm", se = FALSE) +
+  labs(
+    title = "Abalone Age vs Total Weight",
+    x = "Total Weight",
+    y = "Age"
+  ) +
+  theme_minimal()
+```
+The scatterplot shows that the relationship between age and weight is positive. 
+It appears that older abalones generally have a higher weight, but there is 
+a considerable spread for weight at every age. The variability that we can see would
+suggest that weight may be influenced by other biological factors in addition to age. 
+
+Age vs Height plot
+```{r}
+ggplot(abalone, aes(x = Height, y = Age)) +
+  geom_point(alpha = 0.4) +
+  geom_smooth(method = "lm", se = FALSE) +
+  labs(
+    title = "Abalone Age vs Height",
+    x = "Height",
+    y = "Age"
+  ) +
+  theme_minimal()
+```
+The scatterplot shows that there is a positive relationship between abalone age and height.
+We can see as height increases, age tends to also increase. There is still some variability, but
+height appears to associate with growth and aging for an abalone. 
+
+
+Correlation Heat Map for variables 
+```{r}
+abalone_vars <- abalone %>%
+  select(Age, Shell.Weight, Weight, Height, Diameter, Length)
+  
+cor_matrix <- cor(abalone_vars, use = "complete.obs")
+
+corrplot(
+  cor_matrix,
+  method = "color",
+  type = "upper",
+  tl.col = "black",
+  tl.srt = 45,
+  addCoef.col = "white",
+  number.cex = 0.7
+)
+```
+The correlation heat map summarizes the pairwise relationships between age and other important features.
+Shell weight and height seem to have the strongest correlations with age, which we could see in the 
+scatter plots above. Length and Diameter have moderate associations but not as much as other features. Also,
+length and diameter appear to highly correlated with other features, which would indicate that there may 
+be overlap between the predictors for age. This would help explain why length and diameter by themselves 
+were not significant in the model by themselves with the other weight variables. 
+
+
+These exploratory plots indicate that abalone age is strongly associated with shell related and mass based 
+features. While length and diameter do increase with age, there strong correlations with other measurements make them 
+not as significant when they are isolated. This supports my decision to include interactions for my model in objective 1.
+Overall, the findings help highlight the importance of growth and specifically shell development for a predictor of 
+abalone age.
+
+
+# R Shiny App
+
+The Shiny application is available at:  
+**https://chloeprowse.shinyapps.io/abalone-shiny-app/**
+
+
+
